@@ -1,908 +1,696 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import { sendEmail as sendEmailJS } from "../src/services/emailService"
-import { toast } from "@/hooks/use-toast"
+import LandingHero from "@/components/landing-hero"
+
+const PORTRAIT = "/483c47cd-8bb8-47da-8d0a-f3f726313005 - Edited.png"
+
+const PROJECTS = [
+  {
+    id: "01",
+    name: "VISIONIX Decisions",
+    tag: "AI business intelligence",
+    desc: "AI-powered BI platform that helps businesses make smarter strategic decisions with predictive analytics and intelligent automation.",
+    stack: ["Python", "Machine Learning", "Predictive Analytics", "Full Stack"],
+    status: "About to launch",
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000",
+  },
+  {
+    id: "02",
+    name: "Veixon Co-Founders",
+    tag: "AI co-founder platform",
+    desc: "An AI co-founder from day one — idea validation, 90-day execution roadmaps, decision simulation and founder accountability tracking.",
+    stack: ["AI / LLM workflows", "Web dashboard", "Vercel"],
+    status: "Live",
+    img: "/veixon-cofounders.png",
+    href: "https://veixon-cofounders.vercel.app",
+  },
+  {
+    id: "03",
+    name: "Veixon AI",
+    tag: "Decision-support AI",
+    desc: "A human-brain-inspired AI system designed by Rishi to support decision-making and help power his startup.",
+    stack: ["AI systems", "Decision support", "Memory & knowledge"],
+    status: "In development",
+    img: "/veixon-ai.png",
+  },
+  {
+    id: "04",
+    name: "Chakravyuh",
+    tag: "AI fraud detection",
+    desc: "Detects suspicious activity and fraud patterns using machine learning and intelligent behavioural analysis.",
+    stack: ["Machine Learning", "Pattern Detection", "Behavioural Analytics"],
+    status: "Security",
+    img: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Vf7EII799k2PQfR4nm1SR3q2ZzdJRA.png",
+  },
+  {
+    id: "05",
+    name: "EcoConnect AI",
+    tag: "AI waste management",
+    desc: "Three-portal platform connecting citizens, delivery agents and NGOs/industries so scrap reaches the recyclers that need it, with batched pickups.",
+    stack: ["AI image reporting", "WebGL", "Role-based web app"],
+    status: "Hackathon",
+    img: "/ecoconnect-ai.png",
+  },
+  {
+    id: "06",
+    name: "IntelliRecipe",
+    tag: "AI recipe generator",
+    desc: "Generates personalised recipes from the ingredients you have, your taste preferences and dietary requirements.",
+    stack: ["AI", "Machine Learning", "Full Stack"],
+    status: "Project",
+    img: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1000",
+  },
+  {
+    id: "07",
+    name: "#DFA2Z",
+    tag: "AI drone services",
+    desc: "AI-based drone service platform delivering aerial solutions and intelligent automation for diverse industries.",
+    stack: ["Drones", "Aerial AI", "Automation"],
+    status: "Upcoming",
+    img: "/dfa2z-drone.jpg",
+  },
+]
+
+const CERTS = [
+  {
+    name: "Introduction to Machine Learning",
+    org: "AWS Training & Certification",
+    date: "May 2026",
+    detail:
+      "Core ML concepts — supervised vs unsupervised learning, the end-to-end ML lifecycle (data prep, training, evaluation, deployment) and applying ML to business problems on AWS.",
+    href: "/certifications/aws-introduction-to-machine-learning.pdf",
+  },
+  {
+    name: "Beyond Agentic",
+    org: "Microsoft AI Innovators Hub",
+    date: "Oct 2026",
+    detail: "Certificate of appreciation for participating in the Beyond Agentic event at Microsoft Campus, Hyderabad.",
+    href: "/certifications/microsoft-beyond-agentic.png",
+  },
+  {
+    name: "Google Student Ambassador Pitch Night",
+    org: "Google Student Ambassador Program",
+    date: "May 2026",
+    detail: "Certificate of participation recognizing creativity and contribution at Pitch Night Edition.",
+    href: "/certifications/google-student-ambassador-pitch-night.png",
+  },
+  {
+    name: "AI Hackathon — Runner-up",
+    org: "Bower School of Entrepreneurship & STUDLYF",
+    date: "May 2026",
+    detail: "Runner-up team recognition at the AI Hackathon held at Meridian School.",
+    href: "/certifications/bower-ai-hackathon-runner-up.pdf",
+  },
+  {
+    name: "Introduction to Modern AI",
+    org: "Cisco Networking Academy",
+    date: "May 2026",
+    detail: "Course completion covering AI and machine learning fundamentals, computer vision, language translation and large language models.",
+    href: "/certifications/cisco-introduction-to-modern-ai.pdf",
+  },
+  {
+    name: "ChatGPT Generative AI for Business Leaders",
+    org: "Udemy",
+    date: "May 2026",
+    detail: "Completed the Gen AI Primer course for business leaders.",
+    href: "/certifications/udemy-chatgpt-generative-ai-business-leaders.pdf",
+  },
+  {
+    name: "Introduction to Generative AI and Agents",
+    org: "Microsoft Learn",
+    date: "May 2026",
+    detail: "Microsoft Learn achievement for completing the introduction to generative AI and agents.",
+    href: "/certifications/microsoft-learn-generative-ai-agents.pdf",
+  },
+  {
+    name: "Explore AI Basics",
+    org: "Microsoft Learn",
+    date: "May 2026",
+    detail: "Microsoft Learn achievement for completing the Explore AI basics learning path.",
+    href: "/certifications/microsoft-learn-ai-basics.pdf",
+  },
+  {
+    name: "Introduction to AI Concepts",
+    org: "Microsoft Learn",
+    date: "May 2026",
+    detail: "Microsoft Learn achievement for completing the Introduction to AI concepts learning path.",
+    href: "/certifications/microsoft-learn-ai-concepts.pdf",
+  },
+  {
+    name: "Java DSA Course — Fundamentals and Beyond",
+    org: "Scaler Topics",
+    date: "May 2026",
+    detail: "Completed a Java data structures and algorithms course covering 94 video tutorials, 12 modules and 7 challenges.",
+    href: "/certifications/scaler-java-dsa.png",
+  },
+  {
+    name: "Generative AI Mastermind",
+    org: "Outskill",
+    date: "2026",
+    detail: "Certificate of completion for the Generative AI Mastermind program.",
+    href: "/certifications/outskill-generative-ai-mastermind.pdf",
+  },
+  {
+    name: "Claude 101",
+    org: "Anthropic",
+    date: "2026",
+    detail: "Completed Anthropic's Claude 101 course.",
+    href: "/certifications/claude-101.jpg",
+  },
+  {
+    name: "Summer Hackathon 2026",
+    org: "SpectrumCircle",
+    date: "2026",
+    detail: "Certificate of participation in the Summer Hackathon 2026.",
+    href: "/certifications/spectrumcircle-summer-hackathon.png",
+  },
+  {
+    name: "Samsung Solve for Tomorrow 2026",
+    org: "Samsung",
+    date: "2026",
+    detail: "Certificate of participation recognizing contributions and design-thinking work for Samsung Solve for Tomorrow 2026.",
+    href: "/certifications/samsung-solve-for-tomorrow.png",
+  },
+  {
+    name: "IBM SkillsBuild Completion Certificate",
+    org: "IBM SkillsBuild",
+    date: "2026",
+    detail: "Completion certificate issued through IBM SkillsBuild.",
+    href: "/certifications/ibm-skillsbuild-completion.pdf",
+  },
+  {
+    name: "Illuminate Entrepreneurship Bootcamp",
+    org: "E-Cell, IIT Bombay",
+    date: "Oct 2025",
+    detail: "Certificate of appreciation for completing the entrepreneurship bootcamp at St. Peter's Engineering College.",
+    href: "/certifications/ecell-illuminate-entrepreneurship-bootcamp.pdf",
+  },
+  {
+    name: "Getting Started with AI on Jetson Nano",
+    org: "NVIDIA Deep Learning Institute",
+    date: "Dec 2025",
+    detail:
+      "Hands-on edge AI — set up the Jetson Nano, collected image data, and trained and deployed classification and regression models with PyTorch on an embedded GPU.",
+    href: "https://learn.nvidia.com/certificates?id=vfGMHdW4RQG95Fygmlx1sA",
+  },
+  {
+    name: "Cyber Security Job Simulation",
+    org: "Deloitte (Forage)",
+    date: "Nov 2025",
+    detail:
+      "Investigated a security breach as part of Deloitte's cyber team by analysing web-activity logs for suspicious behaviour. Verification code HcyJrfExZ8gAQJTYj.",
+    href: "/deloitte-cyber-security-certificate.pdf",
+  },
+  {
+    name: "Full-Stack Development 101",
+    org: "Simplilearn",
+    date: "May 2026",
+    detail: "Front-end building blocks (HTML, CSS, JavaScript), back-end and server concepts, databases and how the layers connect.",
+    href: "/certifications/simplilearn-full-stack-development.jpeg",
+  },
+  {
+    name: "Python (Basic)",
+    org: "HackerRank",
+    date: "Jul 2025",
+    detail: "Data types, operators, control flow, strings, collections, functions and basic object-oriented programming.",
+    href: "/certifications/hackerrank-python-basic.pdf",
+  },
+  {
+    name: "Java (Basic)",
+    org: "HackerRank",
+    date: "Oct 2025",
+    detail: "Classes and objects, data types, loops and conditionals, methods and core OOP principles.",
+    href: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/java%20certificate-7WHZ3UzaUAV0LkHldZ3oPHFTXQUTxC.png",
+  },
+]
+
+type AchievementProof = {
+  image: string
+  alt: string
+  label: string
+  compact?: boolean
+}
+
+type Achievement = {
+  rank: string
+  event: string
+  project: string
+  detail: string
+  proofs?: AchievementProof[]
+}
+
+const ACHIEVEMENTS: Achievement[] = [
+  {
+    rank: "TOP 5",
+    event: "India–Japan Innovation Hackathon",
+    project: "EcoConnect AI",
+    detail: "Finalist, placing 5th with an AI-powered waste management platform.",
+    proofs: [
+      {
+        image: "/achievements/india-japan-innovation-hackathon-top-5.png",
+        alt: "Award poster recognizing Team Celestial Voyagers and EcoConnect AI as 5th Prize Winner at the India–Japan Innovation Hackathon 2026",
+        label: "View award poster ↗",
+        compact: true,
+      },
+      {
+        image: "/achievements/india-japan-news-coverage.png",
+        alt: "News coverage of the India–Japan Innovation Hackathon achievement",
+        label: "View news coverage ↗",
+        compact: true,
+      },
+    ],
+  },
+  {
+    rank: "RUNNER-UP",
+    event: "AI Hackathon · Bower × STUDLYF × T-Hub",
+    project: "Team VISIONIX",
+    detail: "Runner-up at the May 2026 hackathon hosted at Meridian School.",
+  },
+  {
+    rank: "18TH",
+    event: "CodeChef DSA Monday",
+    project: "Competitive programming",
+    detail: "Placed 18th in the CodeChef Monday Munch — DSA Challenge 013 (Rated).",
+    proofs: [
+      {
+        image: "/achievements/codechef-dsamonday013.png",
+        alt: "CodeChef DSA Monday Challenge 013 contest page showing rank 18",
+        label: "View contest rank ↗",
+      },
+      {
+        image: "/achievements/codechef-dsamonday013-row.png",
+        alt: "CodeChef leaderboard row showing rank 18 and score 600",
+        label: "View leaderboard entry ↗",
+      },
+    ],
+  },
+]
+
+const SKILLS = [
+  "Python",
+  "Java",
+  "C++",
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Flask",
+  "Machine Learning",
+  "Predictive Analytics",
+  "Prompt Engineering",
+  "AI System Design",
+  "Firebase",
+  "Tailwind CSS",
+  "Canva",
+  "Photoshop",
+  "DaVinci Resolve",
+]
 
 export default function Home() {
   const [formStatus, setFormStatus] = useState<string | null>(null)
   const [sending, setSending] = useState(false)
 
+  /* scroll-reveal for everything below the film */
   useEffect(() => {
-    document.documentElement.classList.add("js-ready")
+    const els = document.querySelectorAll<HTMLElement>(".reveal")
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in")
+            io.unobserve(e.target)
+          }
+        }),
+      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" },
+    )
+    els.forEach((el) => io.observe(el))
 
-    // Mouse Blob Follower
-    const blob = document.getElementById("cursor-blob")
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = e.clientX
-      const y = e.clientY
-      if (blob) {
-        blob.style.transform = `translate(${x - 200}px, ${y - 200}px)`
-      }
+    // stats count up the first time they come into view
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const statIo = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          statIo.unobserve(e.target)
+          const el = e.target as HTMLElement
+          const end = Number(el.dataset.n || "0")
+          if (reduce || !end) return
+          const t0 = performance.now()
+          const tick = (now: number) => {
+            const k = Math.min(1, (now - t0) / 1400)
+            el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 4))))
+            if (k < 1) requestAnimationFrame(tick)
+          }
+          el.textContent = "0"
+          requestAnimationFrame(tick)
+        }),
+      { threshold: 0.6 },
+    )
+    document.querySelectorAll<HTMLElement>(".ar-stat u[data-n]").forEach((el) => statIo.observe(el))
+
+    // cursor-follow glow on cards
+    const onMove = (e: PointerEvent) => {
+      const card = (e.target as HTMLElement).closest<HTMLElement>(".glow-card")
+      if (!card) return
+      const r = card.getBoundingClientRect()
+      card.style.setProperty("--mx", `${e.clientX - r.left}px`)
+      card.style.setProperty("--my", `${e.clientY - r.top}px`)
     }
-    document.addEventListener("mousemove", handleMouseMove)
-
-    const projectRows = document.querySelectorAll(".project-row")
-    const handleProjectPointer = (e: PointerEvent) => {
-      projectRows.forEach((row) => {
-        const rect = row.getBoundingClientRect()
-        if (rect.top > window.innerHeight || rect.bottom < 0) return
-        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2
-        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2
-        ;(row as HTMLElement).style.setProperty("--tilt-x", `${(-y * 3).toFixed(2)}deg`)
-        ;(row as HTMLElement).style.setProperty("--tilt-y", `${(x * 4).toFixed(2)}deg`)
-        ;(row as HTMLElement).style.setProperty("--float-x", `${(x * 10).toFixed(2)}px`)
-        ;(row as HTMLElement).style.setProperty("--float-y", `${(y * 8).toFixed(2)}px`)
-      })
-    }
-    window.addEventListener("pointermove", handleProjectPointer)
-
-    // Parallax Effect
-    const handleScroll = () => {
-      const scroll = window.pageYOffset
-
-      // Hero parallax
-      const parallaxTexts = document.querySelectorAll(".parallax-text")
-      parallaxTexts.forEach((text) => {
-        if (text.closest(".project-row")) return
-        const speed = text.getAttribute("data-speed")
-        if (speed) {
-          const offset = scroll * Number.parseFloat(speed) * 0.04
-          const clampedOffset = Math.max(-90, Math.min(90, offset))
-          ;(text as HTMLElement).style.transform = `translateX(${clampedOffset}px)`
-        }
-      })
-
-      const heroImg = document.getElementById("hero-img")
-      if (heroImg) {
-        heroImg.style.transform = `translate(-50%, calc(-50% + ${scroll * 0.2}px)) scale(${1 + scroll * 0.0005})`
-      }
-
-      // Floating labels in project section
-      const labels = document.querySelectorAll(".floating-label")
-      labels.forEach((label, index) => {
-        const direction = index % 2 === 0 ? 1 : -1
-        const offset = Math.max(-70, Math.min(70, scroll * 0.035 * direction))
-        ;(label as HTMLElement).style.transform = `translateY(${offset}px)`
-      })
-    }
-    window.addEventListener("scroll", handleScroll)
-
-    // Simple reveal on enter (Intersection Observer)
-    const observerOptions = {
-      threshold: 0.22,
-      rootMargin: "0px 0px -12% 0px",
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle("active", entry.isIntersecting)
-      })
-    }, observerOptions)
-
-    document.querySelectorAll(".reveal-text, .project-row").forEach((text) => {
-      observer.observe(text)
-    })
-
-    // Add smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", (e) => {
-        e.preventDefault()
-        const target = e.currentTarget as HTMLAnchorElement
-        const href = target.getAttribute("href")
-        if (href) {
-          document.querySelector(href)?.scrollIntoView({
-            behavior: "smooth",
-          })
-        }
-      })
-    })
-
+    document.addEventListener("pointermove", onMove, { passive: true })
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("pointermove", handleProjectPointer)
-      window.removeEventListener("scroll", handleScroll)
-      observer.disconnect()
+      io.disconnect()
+      statIo.disconnect()
+      document.removeEventListener("pointermove", onMove)
     }
   }, [])
 
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const fd = new FormData(form)
+    const name = fd.get("name")?.toString().trim() ?? ""
+    const email = fd.get("email")?.toString().trim() ?? ""
+    const message = fd.get("message")?.toString().trim() ?? ""
+    if (!name || !email || !message) return setFormStatus("Please fill out all fields.")
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setFormStatus("Please enter a valid email address.")
+    setSending(true)
+    setFormStatus(null)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      })
+      const result = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(result.error || "Failed to save message.")
+      try {
+        await sendEmailJS({ name, email, message })
+      } catch (err) {
+        console.warn("EmailJS delivery skipped:", err)
+      }
+      form.reset()
+      setFormStatus(result.notice || "Message sent — I'll get back to you soon.")
+    } catch (err) {
+      console.error("Contact send error:", err)
+      setFormStatus("Failed to send message. Please email me directly.")
+    } finally {
+      setSending(false)
+    }
+  }
+
   return (
-    <>
-      <div className="blob" id="cursor-blob"></div>
+    <div className="site">
+      <header className="ar-top">
+        <a href="#hero" className="ar-brand">
+          <i />
+          ABHINAV<span>·</span>RISHI
+        </a>
+        <nav className="ar-links" aria-label="Primary">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#achievements">Achievements</a>
+          <a href="#certifications">Certifications</a>
+          <a href="#contact" className="ar-cta">
+            Let&apos;s talk
+          </a>
+        </nav>
+      </header>
 
-      <nav>
-        <div className="logo">ABHINAV ©26</div>
-        <ul className="nav-links">
-          <li>
-            <a href="#work">Projects</a>
-          </li>
-          <li>
-            <a href="#certifications">Certifications</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
-      </nav>
+      <div className="ar-progress" aria-hidden="true" />
+      <LandingHero />
 
-      <main>
-        {/* HERO SECTION */}
-        <section id="hero" className="hero-section">
-          <div className="hero-title-container container">
-            <span className="huge-type parallax-text" data-speed="-2">
-              ABHINAV
-            </span>
-            <span className="huge-type outline-text parallax-text hero-last-name" data-speed="2">
-              RISHI
-            </span>
+      <main className="ar-main">
+        <div className="ar-horizon" aria-hidden="true" />
+        {/* ABOUT */}
+        <section id="about" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            ABOUT
           </div>
-          <img
-            src="/483c47cd-8bb8-47da-8d0a-f3f726313005 - Edited.png"
-            alt="Abhinav Rishi"
-            className="hero-portrait"
-          />
-        </section>
-
-        {/* INTRO */}
-        <section id="about">
-          <div className="container">
-            <div className="intro-copy" style={{ maxWidth: "900px" }}>
-              <h2
-                className="parallax-text intro-heading"
-                data-speed="0.12"
-                style={{
-                  fontSize: "3rem",
-                  fontFamily: "var(--syne)",
-                  marginBottom: "40px",
-                }}
-              >
-                BUILDING INTELLIGENT SYSTEMS THAT PREDICT PROBLEMS.
-              </h2>
-              <p
-                style={{
-                  fontSize: "1.5rem",
-                  fontWeight: 300,
-                  color: "#888",
-                  marginBottom: "30px",
-                }}
-              >
-                I’m S Abhinav Rishi, an AI Engineer, Full Stack Developer, and founder of VISIONIX focused on building intelligent systems that predict problems before they happen.
-My work combines Artificial Intelligence, Machine Learning, and modern web technologies to create futuristic digital experiences.
-I enjoy turning complex ideas into clean, scalable, and impactful products.
-From developing AI-powered solutions to crafting high-end web applications, I aim to build technology that feels smart, fast, and human.
-I specialize in Python, Java, C++, React, Flask, and AI system design.
-Beyond coding, I’m deeply passionate about innovation, automation, and creating products that leave a lasting impact.
-I believe technology should not only solve real-world problems but also inspire people through design and intelligence.
-Every project I build reflects precision, creativity, and a vision for the future.
-Currently, I’m focused on pushing the boundaries of AI-driven experiences and next-generation software systems.
-My goal is to build meaningful technology that shapes the future of digital intelligence.
+          <div className="ar-about">
+            <div className="reveal">
+              <div className="ar-sec-h">ABOUT — WHO&apos;S BUILDING THIS</div>
+              <h3 className="ar-sect">
+                <span className="ln">
+                  <span>AI engineer. Full-stack builder.</span>
+                </span>
+                <span className="ln l2">
+                  <em>Founder.</em>
+                </span>
+              </h3>
+              <p className="ar-p">
+                I&apos;m S Abhinav Rishi — a third-year Computer Science student and the founder of VISIONIX. I combine
+                machine learning, predictive analytics and modern web engineering to turn ambitious ideas into clean,
+                scalable products — from business decision intelligence to fraud detection.
               </p>
-              <p
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: 300,
-                  color: "#666",
-                }}
-              >
-                Turning ambitious ideas into scalable AI-driven realities.
+              <p className="ar-p">
+                I work mostly in Python, Java, C++, React and Flask, design and edit in Canva, Photoshop and DaVinci
+                Resolve, and care about technology that feels smart, fast and human.
               </p>
+            </div>
+            <div className="ar-portrait reveal" style={{ ["--d" as string]: "120ms" }}>
+              <img src={PORTRAIT} alt="S Abhinav Rishi" />
+              <span className="ar-portrait-tag">FOUNDER · VISIONIX</span>
+            </div>
+          </div>
+          <div className="ar-marquee reveal" aria-label="Skills">
+            <div className="ar-marquee-track">
+              {[...SKILLS, ...SKILLS].map((s, i) => (
+                <span key={i}>{s}</span>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* MARQUEE */}
-        <div className="scrolling-marquee">
-          <div className="marquee-inner">
-            <span className="huge-type outline-text">AI ENGINEER — FULL STACK — MACHINE LEARNING — PROMPT ENGINEER — </span>
-            <span className="huge-type outline-text">AI ENGINEER — FULL STACK — MACHINE LEARNING — PROMPT ENGINEER — </span>
+        {/* WORK */}
+        <section id="work" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            WORK
           </div>
-        </div>
-
-        {/* WORK SECTION */}
-        <section id="work" className="container">
-          <div className="sticky-type parallax-text" data-speed="-1">ARCHIVE</div>
-
-          {/* Project 1 */}
-          <div className="project-row project-row--image-right">
-            <div className="project-info">
-              <span style={{ fontFamily: "var(--syne)", color: "var(--accent)" }}>001 / BUSINESS INTELLIGENCE</span>
-              <h3 className="huge-type parallax-text" style={{ fontSize: "clamp(2rem, 8vw, 4rem)", margin: "20px 0" }} data-speed="0.08">
-                VISIONIX DECISIONS
-              </h3>
-              <p>
-                An AI Powered Business Intelligence Platform designed to help businesses make smarter strategic decisions using artificial intelligence, predictive analytics, and intelligent automation.
-              </p>
-              <div className="divider"></div>
-              <p>STATUS: ABOUT TO LAUNCH</p>
-            </div>
-            <div className="project-media">
-              <img
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000"
-                alt="Visionix Project"
-                className="project-image"
-              />
-              <div className="floating-label huge-type outline-text" style={{ fontSize: "8rem" }}>
-                DECISIONS
-              </div>
-            </div>
+          <div className="reveal">
+            <div className="ar-sec-h">SELECTED WORK</div>
+            <h3 className="ar-sect">
+              <span className="ln">
+                <span>Seven products,</span>
+              </span>
+              <span className="ln l2">
+                <em>one obsession: prediction.</em>
+              </span>
+            </h3>
           </div>
-
-          {/* Project 2 */}
-          <div className="project-row project-row--image-left intellirecipe-row">
-            <div className="project-media">
-              <img
-                src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1000"
-                alt="IntelliRecipe Project"
-                className="project-image"
-              />
-              <div
-                className="floating-label huge-type outline-text"
-                style={{ fontSize: "8rem", right: "auto", left: "-100px" }}
-              >
-                RECIPES
-              </div>
-            </div>
-            <div className="project-info">
-              <span style={{ fontFamily: "var(--syne)", color: "var(--accent)" }}>002 / AI RECIPE GENERATOR</span>
-              <h3 className="huge-type" style={{ fontSize: "6rem", margin: "20px 0" }}>
-                INTELLIRECIPE
-              </h3>
-              <p>
-                An AI recipe generator that creates personalized recipes based on ingredients, preferences, and dietary requirements.
-              </p>
-              <div className="divider"></div>
-              <p>TECH STACK: AI, Machine Learning, Full Stack</p>
-            </div>
-          </div>
-
-          {/* Project 3 */}
-          <div className="project-row project-row--image-right">
-            <div className="project-info">
-              <span style={{ fontFamily: "var(--syne)", color: "var(--accent)" }}>003 / FRAUD DETECTION</span>
-              <h3 className="huge-type" style={{ fontSize: "6rem", margin: "20px 0" }}>
-                CHAKRAVYUH
-              </h3>
-              <p>
-                An AI Fraud Detection System that detects suspicious activities and fraud patterns using machine learning and intelligent behavioral analysis.
-              </p>
-              <div className="divider"></div>
-              <p>TECH STACK: Machine Learning, Pattern Detection, AI</p>
-            </div>
-            <div className="project-media">
-              <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Vf7EII799k2PQfR4nm1SR3q2ZzdJRA.png"
-                alt="Chakravyuh Project"
-                className="project-image"
-              />
-              <div className="floating-label huge-type outline-text" style={{ fontSize: "8rem" }}>
-                SECURITY
-              </div>
-            </div>
-          </div>
-
-          {/* Project 4 */}
-          <div className="project-row project-row--image-left">
-            <div className="project-media">
-              <img
-                src="/dfa2z-drone.jpg"
-                alt="DFA2Z Project"
-                className="project-image"
-              />
-              <div
-                className="floating-label huge-type outline-text"
-                style={{ fontSize: "8rem", right: "auto", left: "-100px" }}
-              >
-                DRONES
-              </div>
-            </div>
-            <div className="project-info">
-              <span style={{ fontFamily: "var(--syne)", color: "var(--accent)" }}>004 / DRONE SERVICES</span>
-              <h3 className="huge-type" style={{ fontSize: "6rem", margin: "20px 0" }}>
-                #DFA2Z
-              </h3>
-              <p>
-                An AI-based drone service platform designed to deliver comprehensive aerial solutions and intelligent automation for diverse industries.
-              </p>
-              <div className="divider"></div>
-              <p>STATUS: UPCOMING</p>
-            </div>
-          </div>
-        </section>
-
-        {/* CERTIFICATIONS SECTION */}
-        <section id="certifications">
-          <div className="container">
-            <div style={{ marginBottom: "60px" }}>
-              <h2
-                style={{
-                  fontSize: "3rem",
-                  fontFamily: "var(--syne)",
-                  marginBottom: "40px",
-                }}
-                className="parallax-text"
-                data-speed="-1"
-              >
-                CERTIFICATIONS
-              </h2>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Python (Basic)
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>HackerRank</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Earned on: 30 Jul, 2025</p>
-                <a
-                  href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/python_basic%20certificate%20%281%29_page-0001-ATQuRfV9gdaseCj7tXiNHGtmJvKR3o.jpg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Java (Basic)
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>HackerRank</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Earned on: 11 Oct, 2025</p>
-                <a
-                  href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/java%20certificate-7WHZ3UzaUAV0LkHldZ3oPHFTXQUTxC.png"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Full-Stack Development 101
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>Simplilearn</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Completed: 25 May, 2026</p>
-                <a
-                  href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-05-25%20at%2023.35.20-B2AdfGWwh6orSAv1pKijjfMzgr9Si1.jpeg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Introduction to Machine Learning
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>AWS Training & Certification</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Completed: 25 May, 2026</p>
-                <a
-                  href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ML%20Certificate_page-0001-KsrRiFCPkYLdY5oYhS8MOfPn8AztQr.jpg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Getting Started with AI on Jetson Nano
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>NVIDIA</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Completed: 25 Dec, 2025</p>
-                <a
-                  href="https://learn.nvidia.com/certificates?id=vfGMHdW4RQG95Fygmlx1sA"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-              <div
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  padding: "30px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <h4 style={{ fontFamily: "var(--syne)", fontSize: "1.3rem", marginBottom: "10px" }}>
-                  Cyber Security Job Simulation
-                </h4>
-                <p style={{ color: "#888", marginBottom: "15px" }}>Deloitte</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.9rem" }}>Completed: 13 Nov, 2025</p>
-                <p style={{ color: "#666", marginBottom: "20px", fontSize: "0.85rem" }}>
-                  Verification Code: HcyJrfExZ8gAQJTYj
-                </p>
-                <p style={{ color: "#666", marginBottom: "10px", fontSize: "0.85rem" }}>
-                  Certificate verified and stored securely
-                </p>
-                <a
-                  href="/deloitte-cyber-security-certificate.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--accent)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    transition: "opacity 0.3s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  VIEW CERTIFICATE →
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SKILLS SECTION */}
-        {/* ABOUT / FOUNDER SECTION */}
-        <section id="founder">
-          <div className="container">
-            <div style={{ marginBottom: "60px" }}>
-              <h2
-                style={{
-                  fontSize: "3rem",
-                  fontFamily: "var(--syne)",
-                  marginBottom: "10px",
-                }}
-                className="reveal-text"
-              >
-                FOUNDER OF VISIONIX
-              </h2>
-              <p style={{ color: "var(--accent)", fontFamily: "var(--syne)", fontSize: "1.2rem", fontWeight: 600 }}>
-                ABOUT VISIONIX
-              </p>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }}>
-              {/* Image */}
-              <div>
-                <div style={{ position: "relative" }}>
-                  <img
-                    src="/founder-portrait.png"
-                    alt="Founder of VISIONIX"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "0",
-                      filter: "grayscale(1)",
-                      border: "1px solid rgba(255, 255, 255, 0.12)",
-                    }}
-                  />
+          <div className="ar-grid">
+            {PROJECTS.map((p, i) => (
+              <article key={p.id} className="ar-proj glow-card reveal" style={{ ["--d" as string]: `${(i % 3) * 90}ms` }}>
+                <div className="ar-proj-media">
+                  {p.img ? <img src={p.img} alt="" loading="lazy" /> : <div className="ar-proj-art" data-id={p.id} />}
+                  <span className="ar-proj-num">{p.id}</span>
                 </div>
-              </div>
-
-              {/* Content */}
-              <div style={{ paddingTop: "30px" }}>
-                <p
-                  style={{
-                    fontSize: "1.1rem",
-                    fontWeight: 300,
-                    color: "#ccc",
-                    lineHeight: "1.8",
-                    marginBottom: "30px",
-                  }}
-                >
-                  VISIONIX is a product and service-based company dedicated to solving real-world problems with innovative AI-powered solutions. Leading a dynamic team of 2 co-founders and 10 talented crew members, we&apos;re committed to building the future of intelligent technology.
-                </p>
-
-                <div
-                  style={{
-                    paddingTop: "30px",
-                    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <p style={{ color: "#888", fontSize: "0.9rem", marginBottom: "10px" }}>CORE EXPERTISE</p>
-                  <p style={{ color: "#ccc", lineHeight: "1.8" }}>
-                    AI Engineering • Product Development • System Design • Machine Learning • Full Stack Development
-                  </p>
+                <div className="ar-proj-body">
+                  <div className="ar-proj-top">
+                    <span className="ar-mono">{p.tag}</span>
+                    <span className="ar-pill">{p.status}</span>
+                  </div>
+                  <h4>{p.name}</h4>
+                  <p>{p.desc}</p>
+                  <div className="ar-tags">
+                    {p.stack.map((s) => (
+                      <span key={s}>{s}</span>
+                    ))}
+                  </div>
+                  {p.href && (
+                    <a className="ar-link" href={p.href} target="_blank" rel="noopener noreferrer">
+                      Visit live ↗
+                    </a>
+                  )}
                 </div>
-              </div>
-            </div>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* CONTACT SECTION */}
-        <section id="contact">
-          <div className="container">
-            <div style={{ marginBottom: "60px" }}>
-              <h2
-                style={{
-                  fontSize: "3rem",
-                  fontFamily: "var(--syne)",
-                  marginBottom: "40px",
-                }}
+        {/* ACHIEVEMENTS */}
+        <section id="achievements" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            WINS
+          </div>
+          <div className="reveal">
+            <div className="ar-sec-h">MILESTONES & RECOGNITION</div>
+            <h3 className="ar-sect">
+              <span className="ln">
+                <span>Built, competed,</span>
+              </span>
+              <span className="ln l2">
+                <em>recognized.</em>
+              </span>
+            </h3>
+          </div>
+          <div className="ar-achievements">
+            {ACHIEVEMENTS.map((achievement, i) => (
+              <article
+                key={achievement.event}
+                className="ar-achievement glow-card reveal"
+                style={{ ["--d" as string]: `${i * 90}ms` }}
               >
-                LET&apos;S — CONNECT
-              </h2>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", marginBottom: "80px" }}>
-              {/* Contact Form */}
-              <div>
-                <h3 style={{ fontFamily: "var(--syne)", fontSize: "1.5rem", marginBottom: "30px" }}>GET IN TOUCH</h3>
-                <form
-                  onSubmit={async (e) => {
-                    e.preventDefault()
-                    const form = e.currentTarget
-                    const formData = new FormData(form)
-                    const name = formData.get("name")?.toString().trim() ?? ""
-                    const email = formData.get("email")?.toString().trim() ?? ""
-                    const message = formData.get("message")?.toString().trim() ?? ""
-
-                    // Basic validation
-                    if (!name || !email || !message) {
-                      setFormStatus("Please fill out all fields.")
-                      return
-                    }
-
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    if (!emailRegex.test(email)) {
-                      setFormStatus("Please enter a valid email address.")
-                      return
-                    }
-
-                    setSending(true)
-                    setFormStatus(null)
-
-                    try {
-                      // Send email via EmailJS (client-side)
-                      await sendEmailJS({ name, email, message })
-
-                      // Persist message via existing server API (keeps Firestore / admin flow)
-                      const response = await fetch("/api/contact", {
-                        method: "POST",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ name, email, message }),
-                      })
-
-                      if (!response.ok) {
-                        const result = await response.json().catch(() => ({}))
-                        throw new Error(result.error || "Failed to save message.")
-                      }
-
-                      form.reset()
-                      setFormStatus("Message sent successfully.")
-                      toast({ title: "Message sent successfully." })
-                    } catch (error: any) {
-                      console.error("Contact send error:", error)
-                      setFormStatus("Failed to send message.")
-                      toast({ title: "Failed to send message.", description: error?.message })
-                    } finally {
-                      setSending(false)
-                    }
-                  }}
-                  style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-                >
-                  <div>
-                    <label style={{ display: "block", marginBottom: "8px", fontSize: "0.9rem", color: "#888" }}>
-                      YOUR NAME
-                    </label>
-                    <input
-                      suppressHydrationWarning
-                      type="text"
-                      name="name"
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        background: "rgba(255, 255, 255, 0.05)",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        color: "white",
-                        fontFamily: "inherit",
-                        fontSize: "1rem",
-                        transition: "all 0.3s",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                        e.currentTarget.style.borderColor = "var(--accent)";
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", marginBottom: "8px", fontSize: "0.9rem", color: "#888" }}>
-                      YOUR EMAIL
-                    </label>
-                    <input
-                      suppressHydrationWarning
-                      type="email"
-                      name="email"
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        background: "rgba(255, 255, 255, 0.05)",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        color: "white",
-                        fontFamily: "inherit",
-                        fontSize: "1rem",
-                        transition: "all 0.3s",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                        e.currentTarget.style.borderColor = "var(--accent)";
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", marginBottom: "8px", fontSize: "0.9rem", color: "#888" }}>
-                      WHAT DO YOU WANT TO CONNECT ABOUT?
-                    </label>
-                    <textarea
-                      suppressHydrationWarning
-                      name="message"
-                      required
-                      rows={5}
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        background: "rgba(255, 255, 255, 0.05)",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        color: "white",
-                        fontFamily: "inherit",
-                        fontSize: "1rem",
-                        resize: "vertical",
-                        transition: "all 0.3s",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                        e.currentTarget.style.borderColor = "var(--accent)";
-                      }}
-                      onBlur={(e) => {
-                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                      }}
-                    />
-                  </div>
-
-                  <button
-                    suppressHydrationWarning
-                    type="submit"
-                    disabled={sending}
-                    style={{
-                      padding: "14px 32px",
-                      background: sending ? "rgba(255,255,255,0.2)" : "white",
-                      color: sending ? "rgba(0,0,0,0.6)" : "black",
-                      border: "none",
-                      fontFamily: "var(--syne)",
-                      fontSize: "0.9rem",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      cursor: sending ? "not-allowed" : "pointer",
-                      transition: "all 0.3s",
-                      marginTop: "10px",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (sending) return
-                      e.currentTarget.style.background = "var(--accent)"
-                      e.currentTarget.style.color = "white"
-                    }}
-                    onMouseLeave={(e) => {
-                      if (sending) return
-                      e.currentTarget.style.background = "white"
-                      e.currentTarget.style.color = "black"
-                    }}
-                  >
-                    {sending ? "SENDING..." : "SEND MESSAGE"}
-                  </button>
-                </form>
-                {formStatus ? (
-                  <p style={{ marginTop: "16px", color: "#ccc" }}>{formStatus}</p>
-                ) : null}
-              </div>
-
-              {/* Contact Info & Social Links */}
-              <div>
-                <h3 style={{ fontFamily: "var(--syne)", fontSize: "1.5rem", marginBottom: "30px" }}>CONNECT WITH ME</h3>
-
-                <div style={{ marginBottom: "40px" }}>
-                  <p style={{ color: "#888", marginBottom: "8px", fontSize: "0.9rem" }}>EMAIL</p>
+                <span className="ar-achievement-rank">{achievement.rank}</span>
+                <span className="ar-mono">{achievement.event}</span>
+                <h4>{achievement.project}</h4>
+                <p>{achievement.detail}</p>
+                {achievement.proofs?.map((proof) => (
                   <a
-                    href="mailto:abhinavrishisaka@gmail.com"
-                    style={{
-                      color: "white",
-                      textDecoration: "none",
-                      fontSize: "1.1rem",
-                      fontWeight: 500,
-                      transition: "color 0.3s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "white")}
+                    key={proof.image}
+                    className={`ar-achievement-proof${proof.compact ? " ar-achievement-proof-compact" : ""}`}
+                    href={proof.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    abhinavrishisaka@gmail.com
+                    <img src={proof.image} alt={proof.alt} loading="lazy" />
+                    <span className="ar-mono">{proof.label}</span>
                   </a>
-                </div>
+                ))}
+              </article>
+            ))}
+          </div>
+        </section>
 
-                <div style={{ marginBottom: "50px" }}>
-                  <p style={{ color: "#888", marginBottom: "15px", fontSize: "0.9rem", textTransform: "uppercase" }}>
-                    FOLLOW ME
-                  </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <a
-                      href="https://linkedin.com/in/abhinavrishisaka"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: "12px 24px",
-                        background: "white",
-                        color: "black",
-                        border: "none",
-                        fontFamily: "var(--syne)",
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        textDecoration: "none",
-                        cursor: "pointer",
-                        transition: "all 0.3s",
-                        display: "inline-block",
-                        textAlign: "center",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "var(--accent)";
-                        e.currentTarget.style.color = "white";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "white";
-                        e.currentTarget.style.color = "black";
-                      }}
-                    >
-                      → LINKEDIN
-                    </a>
-                    <a
-                      href="https://github.com/Abhinav6305"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: "12px 24px",
-                        background: "white",
-                        color: "black",
-                        border: "none",
-                        fontFamily: "var(--syne)",
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        textDecoration: "none",
-                        cursor: "pointer",
-                        transition: "all 0.3s",
-                        display: "inline-block",
-                        textAlign: "center",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "var(--accent)";
-                        e.currentTarget.style.color = "white";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "white";
-                        e.currentTarget.style.color = "black";
-                      }}
-                    >
-                      → GITHUB
-                    </a>
-                  </div>
+        {/* CERTIFICATIONS */}
+        <section id="certifications" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            VERIFIED
+          </div>
+          <div className="reveal">
+            <div className="ar-sec-h">CERTIFICATIONS</div>
+            <h3 className="ar-sect">
+              <span className="ln">
+                <span>Verified,</span>
+              </span>
+              <span className="ln l2">
+                <em>and still learning.</em>
+              </span>
+            </h3>
+          </div>
+          <div className="ar-certs">
+            {CERTS.map((c, i) => (
+              <a
+                key={c.name}
+                className="ar-cert glow-card reveal"
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ["--d" as string]: `${(i % 3) * 90}ms` }}
+              >
+                <div className="ar-cert-top">
+                  <span className="ar-mono">{c.org}</span>
+                  <span className="ar-mono dim">{c.date}</span>
                 </div>
-              </div>
+                <h4>{c.name}</h4>
+                <p>{c.detail}</p>
+                <span className="ar-link">View certificate ↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* VISIONIX */}
+        <section className="ar-sec">
+          <div className="ar-visionix reveal">
+            <div>
+              <div className="ar-sec-h">THE COMPANY</div>
+              <h3 className="ar-sect">
+                <span className="ln">
+                  <span>VISIONIX —</span>
+                </span>
+                <span className="ln l2">
+                  <em>AI that sees ahead.</em>
+                </span>
+              </h3>
+              <p className="ar-p">
+                A product- and service-based company solving real-world problems with AI. I lead a crew of 2 co-founders
+                and 10 talented members across AI engineering, product development and system design.
+              </p>
             </div>
-
-            <div className="divider"></div>
-
-            {/* Footer */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontFamily: "var(--syne)",
-                fontSize: "0.8rem",
-                textTransform: "uppercase",
-                color: "#555",
-                flexWrap: "wrap",
-                gap: "20px",
-                paddingTop: "30px",
-              }}
-            >
-              <div>© 2026 ABHINAV RISHI</div>
-              <div>DESIGN BY ABHINAV</div>
+            <div className="ar-stats">
+              {[
+                ["1", "Startup founded"],
+                ["13", "Member team"],
+                ["6", "AI products"],
+                ["6", "Certifications"],
+              ].map(([n, l], i) => (
+                <div key={l} className="ar-stat reveal" style={{ ["--d" as string]: `${i * 80}ms` }}>
+                  <u data-n={n}>{n}</u>
+                  <span>{l}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="ar-sec ar-contact">
+          <div className="ar-bgword" aria-hidden="true">
+            HELLO
+          </div>
+          <div className="reveal">
+            <div className="ar-sec-h" style={{ textAlign: "center" }}>
+              CONTACT
+            </div>
+            <h3 className="ar-sect" style={{ textAlign: "center" }}>
+              <span className="ln">
+                <span>Got a problem</span>
+              </span>
+              <span className="ln l2">
+                <em>worth predicting?</em>
+              </span>
+            </h3>
+            <a className="ar-mail" href="mailto:abhinavrishisaka@gmail.com">
+              abhinavrishisaka@gmail.com
+            </a>
+          </div>
+          <div className="ar-contact-grid">
+            <form className="ar-form ar-card reveal" onSubmit={onSubmit}>
+              <label>
+                <span>Your name</span>
+                <input name="name" type="text" required suppressHydrationWarning />
+              </label>
+              <label>
+                <span>Your email</span>
+                <input name="email" type="email" required suppressHydrationWarning />
+              </label>
+              <label>
+                <span>What do you want to build?</span>
+                <textarea name="message" rows={5} required suppressHydrationWarning />
+              </label>
+              <button className="ar-btn" type="submit" disabled={sending} suppressHydrationWarning>
+                {sending ? "SENDING…" : "SEND MESSAGE →"}
+              </button>
+              {formStatus && <p className="ar-status">{formStatus}</p>}
+            </form>
+            <div className="ar-socials reveal" style={{ ["--d" as string]: "120ms" }}>
+              <a href="https://linkedin.com/in/abhinavrishisaka" target="_blank" rel="noopener noreferrer" className="glow-card">
+                <span className="ar-mono">LINKEDIN</span>
+                <b>/in/abhinavrishisaka ↗</b>
+              </a>
+              <a href="https://github.com/Abhinav6305" target="_blank" rel="noopener noreferrer" className="glow-card">
+                <span className="ar-mono">GITHUB</span>
+                <b>/Abhinav6305 ↗</b>
+              </a>
+              <a href="tel:+919618587055" className="glow-card">
+                <span className="ar-mono">PHONE</span>
+                <b>+91 96185 87055</b>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <div className="ar-endword" aria-hidden="true">
+          ABHINAV RISHI
+        </div>
+        <footer className="ar-foot">
+          <span>© 2026 S ABHINAV RISHI</span>
+          <span>FOUNDER · VISIONIX</span>
+          <span>HYDERABAD, INDIA</span>
+        </footer>
       </main>
-    </>
+    </div>
   )
 }

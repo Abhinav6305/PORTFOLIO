@@ -4,21 +4,33 @@ const projectId = process.env.FIREBASE_PROJECT_ID
 const clientEmail = process.env.FIREBASE_CLIENT_EMAIL
 const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n")
 
-if (!projectId || !clientEmail || !privateKey) {
-  throw new Error(
-    "Firebase environment variables are required: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY"
-  )
+function getFirebaseApp() {
+  if (!projectId || !clientEmail || !privateKey) {
+    return null
+  }
+
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
+    })
+  }
+
+  return admin.app()
 }
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId,
-      clientEmail,
-      privateKey,
-    }),
-  })
+export function getDb() {
+  const app = getFirebaseApp()
+  if (!app) {
+    return null
+  }
+
+  return admin.firestore(app)
 }
 
-export const db = admin.firestore()
-export const serverTimestamp = admin.firestore.FieldValue.serverTimestamp
+export function getServerTimestamp() {
+  return admin.firestore.FieldValue.serverTimestamp()
+}

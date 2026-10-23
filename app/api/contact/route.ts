@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
-import { db, serverTimestamp } from "@/lib/firebaseAdmin"
+import { getDb, getServerTimestamp } from "@/lib/firebaseAdmin"
 
 const mailTo = process.env.MAIL_TO ?? "abhinavrishisaka@gmail.com"
 const mailFrom = process.env.MAIL_FROM ?? "no-reply@visionix.com"
@@ -27,15 +27,20 @@ async function sendEmail(name: string, email: string, message: string) {
     return false
   }
 
-  await transporter.sendMail({
-    from: `${name} <${mailFrom}>`,
-    to: mailTo,
-    subject: `New message from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-    replyTo: email,
-  })
+  try {
+    await transporter.sendMail({
+      from: `${name} <${mailFrom}>`,
+      to: mailTo,
+      subject: `New message from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      replyTo: email,
+    })
 
-  return true
+    return true
+  } catch (error) {
+    console.error("SMTP error:", error)
+    return false
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -49,22 +54,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const docRef = await db.collection("contacts").add({
-      name,
-      email,
-      message,
-      createdAt: serverTimestamp(),
-    })
+    let saved = false
+    let id: string | undefined
+    const db = getDb()
+
+    if (db) {
+      try {
+        const docRef = await db.collection("contacts").add({
+          name,
+          email,
+          message,
+          createdAt: getServerTimestamp(),
+        })
+
+        saved = true
+        id = docRef.id
+      } catch (error) {
+        console.error("Contact persistence error:", error)
+      }
+    }
 
     const emailSent = await sendEmail(name, email, message)
 
     return NextResponse.json({
       success: true,
-      id: docRef.id,
+      saved,
+      id,
       emailSent,
-      notice: emailSent
-        ? "Message saved and email sent."
-        : "Message saved. Email service is not configured.",
+      notice: saved
+        ? emailSent
+          ? "Message saved and email sent."
+          : "Message saved. Email service is not configured."
+        : "Message received. Storage is not configured on this server.",
     })
   } catch (error) {
     console.error("Contact API error:", error)

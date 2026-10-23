@@ -1,15 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Syne, Inter } from "next/font/google"
+import { Unbounded, Inter, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne" })
+const display = Unbounded({ subsets: ["latin"], weight: ["400", "600", "800"], variable: "--font-display" })
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
   title: "ABHINAV RISHI | AI Engineer & Full Stack Developer",
-  description: "AI Engineer, Full Stack Developer, and visionary creator focused on building futuristic AI-powered products.",
+  description: "S Abhinav Rishi — AI engineer, full-stack developer and founder of VISIONIX, building intelligent systems that predict problems before they happen.",
   generator: "v0.app",
   icons: {
     icon: [
@@ -37,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${inter.variable}`}>
+      <body className={`${display.variable} ${inter.variable} ${mono.variable}`}>
         {children}
         <Analytics />
       </body>
