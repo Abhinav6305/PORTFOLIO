@@ -173,6 +173,15 @@ const EXPERIENCE = [
       "Selected for FlyRank AI's July 2026 internship program in the UI / UX Design track. Designing interfaces and user experiences for AI-driven products.",
     tags: ["UI/UX Design", "AI products", "Product Design"],
   },
+  {
+    role: "Summer of AI Intern",
+    org: "SWAYAM in collaboration with IIITH",
+    when: "Apr 2025 – Jul 2025",
+    current: false,
+    detail:
+      "Completed the Summer of AI (SOAI) internship by SWAYAM in collaboration with IIITH.",
+    tags: ["SOAI", "Artificial Intelligence", "IIITH"],
+  },
 ]
 
 const CERTS = [
