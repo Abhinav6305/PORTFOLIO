@@ -150,9 +150,9 @@
   --ar-muted: #7a7a7a;
   --ar-line: rgba(255, 255, 255, 0.12);
   --ar-line2: rgba(255, 255, 255, 0.28);
-  --ar-disp: var(--font-display), "Unbounded", system-ui, sans-serif;
-  --ar-body: var(--font-inter), "Inter", system-ui, sans-serif;
-  --ar-mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  --ar-disp: var(--font-spartan), "League Spartan", system-ui, sans-serif;
+  --ar-body: var(--font-spartan), "League Spartan", system-ui, sans-serif;
+  --ar-mono: var(--font-spartan), "League Spartan", system-ui, sans-serif;
   color-scheme: dark;
 }
 html { scroll-behavior: auto; }
@@ -523,3 +523,193 @@ a { color: inherit; }
   .ar-proj-media img, .ar-portrait img, .ar-bgword, .ar-endword, .ar-horizon, .ar-marquee, .ar-progress { animation: none !important; }
   .ar-horizon { transform: none; }
 }
+
+/* ==================================================================
+   LAYOUT v2 — full-width content in containers
+   Film acts sit in one wide glass panel along the lower part of the
+   screen (title left, details right); the black hole fills the space
+   above. Every page section is its own framed container.
+   ================================================================== */
+:root {
+  --ar-sky: #7cc4ff;
+  --ar-sky-dim: rgba(124, 196, 255, 0.16);
+  --ar-glass: linear-gradient(160deg, rgba(8, 18, 34, 0.74), rgba(3, 8, 18, 0.66));
+  --ar-glass-line: rgba(140, 200, 255, 0.16);
+}
+.ar-act { align-items: flex-end; }
+.ar-act-inner {
+  position: relative;
+  width: min(1240px, calc(100vw - 48px));
+  margin: 0 auto calc(4.2vh + 74px);
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(24px, 4vw, 56px); align-items: end;
+  padding: clamp(24px, 3vw, 38px) clamp(24px, 3.2vw, 44px);
+  background: var(--ar-glass);
+  border: 1px solid var(--ar-glass-line);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.ar-act-l, .ar-act-r { min-width: 0; }
+.ar-act-r { display: flex; flex-direction: column; gap: 18px; }
+.ar-act-r .ar-lede { margin: 0; max-width: none; }
+.ar-act-r .ar-chips { margin-top: 0; }
+.ar-act-r .ar-readout { width: 100%; margin-top: 0; background: rgba(2, 6, 14, 0.6); border-color: var(--ar-glass-line); }
+.ar-act-r .ar-btn { margin-top: 0; align-self: flex-start; }
+.ar-act .ar-eyebrow { color: var(--ar-sky); }
+.ar-act .ar-eyebrow s { background: var(--ar-sky); }
+.ar-act .ar-mega { font-size: clamp(44px, 6.4vw, 108px); }
+.ar-act .ar-big { font-size: clamp(30px, 4vw, 58px); margin: 0; }
+.ar-num { left: auto; right: 4vw; top: 22%; font-size: clamp(140px, 20vw, 320px); -webkit-text-stroke-color: rgba(124, 196, 255, 0.1); }
+
+/* page sections become framed containers spanning the content width */
+.ar-main { padding: 6vh 0 2vh; }
+.ar-sec {
+  width: min(1280px, calc(100vw - 32px)); max-width: none; margin: clamp(28px, 5vw, 64px) auto;
+  padding: clamp(32px, 5vw, 72px) clamp(22px, 4.5vw, 64px);
+  background: var(--ar-glass);
+  border: 1px solid var(--ar-glass-line);
+  border-radius: 28px; overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.ar-sec .ar-visionix { padding: 0; border: 0; background: none; }
+.ar-sec-h { color: var(--ar-sky); }
+.ar-sec-h::before { box-shadow: 0 0 0 1px var(--ar-sky), 0 0 10px rgba(124, 196, 255, 0.6); }
+.ar-proj, .ar-cert, .ar-achievement, .ar-stat, .ar-socials a, .ar-form { background: rgba(2, 6, 14, 0.55); border-color: var(--ar-glass-line); }
+.ar-proj:hover, .ar-cert:hover, .ar-achievement:hover { border-color: rgba(124, 196, 255, 0.45); }
+.ar-foot { width: min(1280px, calc(100vw - 32px)); margin: 0 auto 30px; border: 1px solid var(--ar-glass-line); border-radius: 18px; background: var(--ar-glass); }
+.ar-endword { -webkit-text-stroke-color: rgba(124, 196, 255, 0.35); }
+.glow-card::before { background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(124, 196, 255, 0.1), transparent 45%); }
+
+@media (max-width: 900px) {
+  .ar-act-inner { grid-template-columns: 1fr; gap: 14px; margin-bottom: calc(4.2vh + 70px); padding: 20px; border-radius: 18px; }
+  .ar-num { top: 12%; right: 2vw; font-size: 38vw; }
+}
+@media (max-width: 760px) {
+  .ar-act-inner { width: calc(100vw - 24px); margin-bottom: calc(2.6vh + 62px); padding: 18px 16px; }
+  .ar-act .ar-mega { font-size: clamp(38px, 12vw, 56px); }
+  .ar-sec { width: calc(100vw - 16px); border-radius: 20px; }
+  .ar-foot { width: calc(100vw - 16px); }
+}
+
+/* ==================================================================
+   CONTENT v3 — personal-portfolio sections
+   ================================================================== */
+.ar-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.ar-cloud span { font-family: var(--ar-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 7px 12px; border-radius: 100px; border: 1px solid var(--ar-glass-line); color: #d8e8f8; background: rgba(124, 196, 255, 0.06); transition: border-color 0.3s, color 0.3s, background 0.3s; }
+.ar-cloud span:hover { border-color: var(--ar-sky); color: #fff; background: rgba(124, 196, 255, 0.14); }
+
+.ar-btn.ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+.ar-btn.ghost::before { background: #fff; }
+.ar-btn.ghost:hover { color: #000; background: transparent; }
+.ar-more { display: flex; justify-content: center; margin-top: 34px; }
+.ar-more .ar-btn { margin-top: 0; }
+
+.ar-resume { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 70px); align-items: start; }
+.ar-resume .ar-btn { margin-top: 10px; }
+.ar-resume-cards { display: grid; gap: 16px; }
+.ar-edu { padding: 24px 24px 26px; border: 1px solid var(--ar-glass-line); border-radius: 16px; background: rgba(2, 6, 14, 0.55); }
+.ar-edu h4 { font-family: var(--ar-disp); font-weight: 600; font-size: 18px; line-height: 1.4; margin: 14px 0 8px; color: #fff; }
+.ar-edu p { margin: 0; font-size: 14px; line-height: 1.65; color: var(--ar-muted); font-weight: 300; }
+.ar-list { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.ar-list li { position: relative; padding-left: 20px; font-size: 14px; line-height: 1.6; color: var(--ar-soft); font-weight: 300; }
+.ar-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 1px; background: var(--ar-sky); }
+
+.ar-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.ar-filters button { font-family: var(--ar-mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; padding: 9px 16px; border-radius: 100px; border: 1px solid var(--ar-glass-line); background: rgba(2, 6, 14, 0.5); color: var(--ar-soft); cursor: pointer; transition: 0.3s; }
+.ar-filters button:hover { border-color: var(--ar-sky); color: #fff; }
+.ar-filters button.on { background: #fff; color: #000; border-color: #fff; }
+.ar-filters + .ar-grid, .ar-filters + .ar-certs { margin-top: 24px; }
+
+.ar-skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+.ar-skill { padding: 22px; border: 1px solid var(--ar-glass-line); border-radius: 16px; background: rgba(2, 6, 14, 0.55); }
+.ar-skill .ar-tags { padding-top: 14px; }
+
+.ar-exp { display: grid; gap: 16px; margin-top: 40px; }
+.ar-exp-card { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 28px; padding: 28px; border: 1px solid var(--ar-glass-line); border-radius: 18px; background: rgba(2, 6, 14, 0.55); }
+.ar-exp-when { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; border-right: 1px solid var(--ar-glass-line); padding-right: 20px; }
+.ar-exp-card h4 { font-family: var(--ar-disp); font-weight: 600; font-size: 21px; margin: 0 0 8px; color: #fff; }
+.ar-exp-card p { margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: var(--ar-soft); font-weight: 300; max-width: 70ch; }
+.ar-pill.now { color: var(--ar-sky); border-color: rgba(124, 196, 255, 0.45); }
+
+.ar-sec-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; }
+.ar-count { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-bottom: 22px; }
+.ar-count u { text-decoration: none; font-family: var(--ar-disp); font-weight: 800; font-size: clamp(44px, 6vw, 76px); line-height: 1; color: #fff; text-shadow: 0 0 30px rgba(124, 196, 255, 0.35); }
+.ar-count span { font-family: var(--ar-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ar-muted); }
+
+.ar-ach-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; width: 100%; }
+.ar-achievement p b { color: #fff; font-weight: 500; }
+.ar-achievement > .ar-mono { margin-top: 2px; }
+
+.ar-beyond { margin-top: 40px; padding: 26px 28px; border: 1px solid var(--ar-glass-line); border-radius: 18px; background: rgba(2, 6, 14, 0.5); }
+.ar-beyond .ar-sec-h { margin-bottom: 16px; }
+.ar-beyond-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.ar-beyond-grid p { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: var(--ar-soft); font-weight: 300; }
+
+.ar-center { margin-left: auto; margin-right: auto; text-align: center; }
+.ar-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ar-loc { display: flex; flex-direction: column; gap: 8px; padding: 22px; border: 1px solid var(--ar-glass-line); border-radius: 14px; background: rgba(2, 6, 14, 0.55); flex: 1; justify-content: center; }
+.ar-loc b { font-family: var(--ar-disp); font-weight: 600; font-size: 16px; }
+.ar-tagline { margin: 48px 0 0; text-align: center; font-family: var(--ar-disp); font-weight: 600; font-size: clamp(16px, 2vw, 22px); letter-spacing: 0.02em; color: var(--ar-sky); }
+
+/* eight nav links: trim the list on mid-size screens */
+@media (max-width: 1240px) { .ar-links a[href="#certifications"], .ar-links a[href="#academics"], .ar-links a[href="#achievements"] { display: none; } }
+@media (max-width: 1040px) {
+  .ar-skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ar-beyond-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .ar-resume { grid-template-columns: 1fr; }
+  .ar-exp-card { grid-template-columns: 1fr; gap: 14px; }
+  .ar-exp-when { border-right: 0; padding-right: 0; flex-direction: row; align-items: center; flex-wrap: wrap; }
+}
+@media (max-width: 760px) {
+  .ar-skills, .ar-beyond-grid, .ar-form-row { grid-template-columns: 1fr; }
+  .ar-count { align-items: flex-start; padding-bottom: 0; }
+}
+
+/* ==================================================================
+   TYPE — League Spartan
+   Geometric and compact: headings go bolder and tighter, body text
+   gets a touch more size and weight, uppercase labels a bit larger.
+   ================================================================== */
+body { font-weight: 400; }
+.ar-mega, .ar-big, .ar-sect, .ar-proj-num, .ar-num, .ar-bgword, .ar-endword, .ar-count u, .ar-stat u, .ar-achievement-rank { font-weight: 800; letter-spacing: -0.035em; }
+.ar-act .ar-mega { font-size: clamp(50px, 7vw, 120px); line-height: 0.88; }
+.ar-act .ar-big { font-size: clamp(34px, 4.4vw, 64px); line-height: 0.95; }
+.ar-sect { font-size: clamp(32px, 4.6vw, 62px); line-height: 0.98; }
+.ar-lede, .ar-p { font-weight: 400; font-size: clamp(15.5px, 1.25vw, 18px); line-height: 1.6; }
+.ar-proj p, .ar-cert p, .ar-achievement p, .ar-edu p, .ar-exp-card p, .ar-beyond-grid p, .ar-list li { font-weight: 400; font-size: 15px; }
+.ar-proj h4, .ar-cert h4, .ar-achievement h4, .ar-edu h4, .ar-exp-card h4 { font-weight: 700; letter-spacing: -0.01em; }
+.ar-eyebrow, .ar-sec-h, .ar-mono, .ar-chip, .ar-pill, .ar-tags span, .ar-cloud span, .ar-filters button, .ar-links, .ar-rail, .ar-hud, .ar-readout, .ar-skip, .ar-hint, .ar-foot, .ar-pre-pct, .ar-form label span, .ar-count span, .ar-stat span, .ar-portrait-tag, .ar-link {
+  font-weight: 500;
+}
+.ar-eyebrow, .ar-sec-h { font-size: 12px; letter-spacing: 0.3em; }
+.ar-mono, .ar-chip, .ar-pill, .ar-cloud span, .ar-filters button, .ar-form label span, .ar-count span, .ar-stat span { font-size: 11.5px; letter-spacing: 0.14em; }
+.ar-tags span { font-size: 11px; letter-spacing: 0.05em; }
+.ar-links { font-size: 12.5px; letter-spacing: 0.12em; }
+.ar-readout { font-size: 12.5px; }
+.ar-readout .hd { font-size: 11px; }
+.ar-hud b { font-size: 14px; font-weight: 600; }
+.ar-btn { font-weight: 700; font-size: 13.5px; letter-spacing: 0.08em; }
+.ar-brand { font-weight: 800; font-size: 14px; }
+.ar-mail { font-weight: 700; }
+
+/* landing is a single act now: a short intro scroll before "Who am I" */
+.ar-film { height: 175vh; }
+.ar-rail, .ar-num { display: none; }
+@media (prefers-reduced-motion: reduce) { .ar-film { height: 140vh; } }
+
+/* academic background: a vertical timeline with score badges */
+.ar-timeline { list-style: none; margin: 0; padding: 0 0 0 26px; display: grid; gap: 16px; position: relative; }
+.ar-timeline::before { content: ""; position: absolute; left: 6px; top: 12px; bottom: 12px; width: 1px; background: linear-gradient(var(--ar-sky), rgba(124, 196, 255, 0.1)); }
+.ar-timeline > li { position: relative; }
+.ar-timeline > li::before { content: ""; position: absolute; left: -26px; top: 26px; width: 13px; height: 13px; border-radius: 50%; background: #03070f; box-shadow: 0 0 0 1px var(--ar-sky); }
+.ar-timeline > li.now::before { background: var(--ar-sky); box-shadow: 0 0 0 1px var(--ar-sky), 0 0 14px var(--ar-sky); }
+.ar-edu-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; }
+.ar-edu-row > div:first-child { min-width: 0; }
+.ar-school { display: block; font-size: 15px; color: var(--ar-sky); font-weight: 500; }
+.ar-edu-row p { margin-top: 10px; }
+.ar-score { display: flex; flex-direction: column; align-items: flex-end; flex: none; }
+.ar-score u { text-decoration: none; font-family: var(--ar-disp); font-weight: 800; font-size: clamp(34px, 4vw, 48px); line-height: 1; letter-spacing: -0.03em; color: #fff; text-shadow: 0 0 24px rgba(124, 196, 255, 0.35); }
+.ar-score span { margin-top: 6px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ar-muted); }
+.ar-strengths { margin-top: 26px; }
+@media (max-width: 760px) { .ar-edu-row { flex-direction: column; align-items: flex-start; } .ar-score { align-items: flex-start; } }

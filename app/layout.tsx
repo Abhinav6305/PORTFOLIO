@@ -1,16 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Unbounded, Inter, JetBrains_Mono } from "next/font/google"
+import { League_Spartan } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const display = Unbounded({ subsets: ["latin"], weight: ["400", "600", "800"], variable: "--font-display" })
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" })
+// League Spartan across the whole site (variable weight 100–900)
+const spartan = League_Spartan({ subsets: ["latin"], variable: "--font-spartan", display: "swap" })
 
 export const metadata: Metadata = {
   title: "ABHINAV RISHI | AI Engineer & Full Stack Developer",
-  description: "S Abhinav Rishi — AI engineer, full-stack developer and founder of VISIONIX, building intelligent systems that predict problems before they happen.",
+  description: "S Abhinav Rishi — AI engineer and full-stack developer building intelligent systems that predict problems before they happen.",
   generator: "v0.app",
   icons: {
     icon: [
@@ -38,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${inter.variable} ${mono.variable}`}>
+      <body className={spartan.variable}>
         {children}
         <Analytics />
       </body>

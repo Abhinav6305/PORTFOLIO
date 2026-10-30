@@ -27,95 +27,10 @@ type Act = {
 const ACTS: Act[] = [
   {
     rail: "HELLO",
-    eyebrow: "AI ENGINEER · FULL-STACK · FOUNDER OF VISIONIX",
+    eyebrow: "AI ENGINEER · FULL-STACK DEVELOPER · UI/UX DESIGNER",
     title: [<>ABHINAV</>, <>RISHI</>],
-    lede: "I build intelligent systems that predict problems before they happen — and ship them as real products.",
-  },
-  {
-    rail: "DECISIONS",
-    eyebrow: "01 — VISIONIX DECISIONS",
-    title: [<>Decisions,</>, <>predicted.</>],
-    lede: "An AI business-intelligence platform. Predictive analytics and intelligent automation turn a company's data into the next strategic move — before the market forces it.",
-    readout: {
-      head: "PRODUCT_01",
-      tag: "● LAUNCHING",
-      rows: [
-        { k: "CATEGORY", v: "BUSINESS INTELLIGENCE" },
-        { k: "CORE", v: "PREDICTIVE ANALYTICS" },
-        { k: "ENGINE", v: "ML + AUTOMATION" },
-        { k: "STATUS", v: "ABOUT TO LAUNCH", amb: true },
-      ],
-    },
-  },
-  {
-    rail: "VEIXON",
-    eyebrow: "02 — VEIXON CO-FOUNDERS",
-    title: [<>A co-founder</>, <>from day one.</>],
-    lede: "An AI co-founder for early-stage founders: it validates the idea, writes the 90-day execution plan, simulates the hard decisions and keeps you accountable.",
-    readout: {
-      head: "PRODUCT_02",
-      tag: "● LIVE",
-      rows: [
-        { k: "MODULE 1", v: "IDEA VALIDATION" },
-        { k: "MODULE 2", v: "90-DAY ROADMAP" },
-        { k: "MODULE 3", v: "DECISION SIMULATION" },
-        { k: "MODULE 4", v: "FOUNDER ACCOUNTABILITY" },
-      ],
-    },
-    link: { href: "https://veixon-cofounders.vercel.app", label: "OPEN VEIXON ↗", external: true },
-  },
-  {
-    rail: "CHAKRAVYUH",
-    eyebrow: "03 — CHAKRAVYUH",
-    title: [<>Fraud walks in.</>, <>It doesn&apos;t walk out.</>],
-    lede: "Named after the labyrinth formation of the Mahabharata. Machine learning and behavioural analysis trace suspicious activity ring by ring until the pattern is trapped.",
-    readout: {
-      head: "PRODUCT_03",
-      tag: "SECURITY AI",
-      rows: [
-        { k: "METHOD", v: "ML + BEHAVIOUR ANALYSIS" },
-        { k: "INPUT", v: "ACTIVITY STREAMS" },
-        { k: "OUTPUT", v: "FRAUD PATTERN ALERTS", amb: true },
-      ],
-    },
-  },
-  {
-    rail: "ECOCONNECT",
-    eyebrow: "04 — ECOCONNECT AI",
-    title: [<>Waste, routed to</>, <>a second life.</>],
-    lede: "Citizens scan and upload waste, verified industries claim the material they need, and delivery agents get batched pickups by area — one loop, three portals.",
-    readout: {
-      head: "PRODUCT_04",
-      tag: "HACKATHON",
-      rows: [
-        { k: "PORTAL", v: "USER · SCAN + UPLOAD" },
-        { k: "PORTAL", v: "NGO / INDUSTRY" },
-        { k: "PORTAL", v: "DELIVERY AGENTS" },
-        { k: "ROUTING", v: "BATCHED BULK PICKUPS", amb: true },
-      ],
-    },
-  },
-  {
-    rail: "DFA2Z",
-    eyebrow: "05 — #DFA2Z",
-    title: [<>Taking AI</>, <>to the skies.</>],
-    lede: "An AI-based drone service platform delivering aerial solutions and intelligent automation for industries that need eyes above the ground.",
-    readout: {
-      head: "PRODUCT_05",
-      tag: "UPCOMING",
-      rows: [
-        { k: "DOMAIN", v: "DRONE SERVICES" },
-        { k: "CORE", v: "AERIAL AI + AUTOMATION" },
-        { k: "STATUS", v: "IN THE HANGAR", amb: true },
-      ],
-    },
-  },
-  {
-    rail: "BEYOND",
-    eyebrow: "06 — PAST THE HORIZON",
-    title: [<>Let&apos;s build what</>, <>comes next.</>],
-    lede: "Founder of VISIONIX, leading 2 co-founders and 10 crew members. Open to collaborations, internships and ambitious problems worth predicting.",
-    link: { href: "#contact", label: "START A CONVERSATION →" },
+    lede: "Wandering between code and the cosmos, building intelligent systems that see problems coming before they arrive.",
+    link: { href: "#about", label: "EXPLORE MY UNIVERSE ↓" },
   },
 ]
 const NA = ACTS.length
@@ -151,20 +66,17 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t
    The final key dives through the horizon into the tesseract.            */
 type Key = { d: number; el: number; az: number; rl: number; fov: number; sx: number; sy: number; dim: number; sc: number; plunge?: boolean }
 const FILM_KEYS: Key[] = [
-  { d: 10, el: 0.075, az: 0.0, rl: -0.08, fov: 50, sx: 0.04, sy: 0.16, dim: 1, sc: 1 }, // HELLO — right up against it
-  { d: 9, el: 0.045, az: 0.6, rl: 0.1, fov: 56, sx: 0.24, sy: 0.16, dim: 1, sc: 1 }, // DECISIONS — edge-on
-  { d: 8.5, el: 0.36, az: 1.3, rl: -0.18, fov: 58, sx: 0.24, sy: 0.16, dim: 1, sc: 1 }, // VEIXON — climbing
-  { d: 14, el: 1.3, az: 1.9, rl: 0.0, fov: 60, sx: 0.26, sy: 0.16, dim: 1, sc: 1 }, // CHAKRAVYUH — top-down rings
-  { d: 7.5, el: 0.16, az: 3.6, rl: 0.2, fov: 62, sx: 0.24, sy: 0.16, dim: 1, sc: 1 }, // ECOCONNECT — far side
-  { d: 5.6, el: 0.035, az: 4.4, rl: -0.28, fov: 68, sx: 0.24, sy: 0.16, dim: 1, sc: 1 }, // DFA2Z — skimming the disk
-  { d: 8, el: 0.1, az: 5.2, rl: 0.16, fov: 58, sx: 0.24, sy: 0.16, dim: 1, sc: 1 }, // BEYOND
+  { d: 10, el: 0.07, az: 0.0, rl: -0.1, fov: 54, sx: 0, sy: 0.16, dim: 1, sc: 1 }, // landing
+  { d: 8.5, el: 0.11, az: 0.45, rl: 0.06, fov: 56, sx: 0, sy: 0.16, dim: 0.85, sc: 1 }, // drifting in as the page begins
 ]
 const SECTION_KEYS: Key[] = [
-  { d: 9.5, el: 0.2, az: 6.0, rl: -0.12, fov: 58, sx: 0.32, sy: 0.1, dim: 0.62, sc: 0.6 }, // about
-  { d: 15, el: 0.7, az: 6.8, rl: 0.08, fov: 62, sx: 0.0, sy: 0.0, dim: 0.42, sc: 0 }, // work
-  { d: 7, el: 0.06, az: 7.6, rl: -0.2, fov: 58, sx: -0.26, sy: 0.0, dim: 0.5, sc: 0 }, // achievements
-  { d: 16, el: 1.2, az: 8.4, rl: 0.0, fov: 64, sx: 0.0, sy: 0.0, dim: 0.4, sc: 0 }, // certifications
-  { d: 6.5, el: 0.12, az: 9.3, rl: 0.24, fov: 60, sx: 0.28, sy: 0.0, dim: 0.55, sc: 0 }, // company
+  { d: 9.5, el: 0.2, az: 6.0, rl: -0.12, fov: 58, sx: 0.32, sy: 0.1, dim: 0.62, sc: 0 }, // about
+  { d: 12, el: 0.45, az: 6.5, rl: 0.1, fov: 60, sx: -0.3, sy: 0.0, dim: 0.5, sc: 0 }, // skills
+  { d: 15, el: 0.7, az: 7.0, rl: 0.08, fov: 62, sx: 0.0, sy: 0.0, dim: 0.42, sc: 0 }, // certifications
+  { d: 8, el: 0.08, az: 7.6, rl: -0.2, fov: 58, sx: 0.3, sy: 0.0, dim: 0.5, sc: 0 }, // projects
+  { d: 11, el: 0.3, az: 8.1, rl: 0.15, fov: 60, sx: -0.28, sy: 0.0, dim: 0.5, sc: 0 }, // academic background
+  { d: 16, el: 1.2, az: 8.6, rl: 0.0, fov: 64, sx: 0.0, sy: 0.0, dim: 0.4, sc: 0 }, // experience
+  { d: 6.5, el: 0.12, az: 9.3, rl: 0.24, fov: 60, sx: 0.28, sy: 0.0, dim: 0.5, sc: 0 }, // achievements
   { d: 1.75, el: 0.1, az: 10.0, rl: 0.6, fov: 50, sx: 0.0, sy: 0.0, dim: 0.75, sc: 0, plunge: true }, // contact — through the horizon
 ]
 
@@ -201,10 +113,10 @@ float fbmS(float x, float u, float K, int oct){
   return s;
 }
 
-/* emission colour of the gas: deep ember -> tan -> cream -> white-hot */
+/* emission colour of the gas: deep navy -> ocean -> sky blue -> ice-white core */
 vec3 heat(float T){
   T = clamp(T, 0., 3.);
-  vec3 c0 = vec3(.16, .08, .04), c1 = vec3(.62, .34, .17), c2 = vec3(.98, .8, .6), c3 = vec3(1., .97, .93);
+  vec3 c0 = vec3(.01, .025, .06), c1 = vec3(.04, .17, .4), c2 = vec3(.3, .62, .95), c3 = vec3(.78, .91, 1.);
   return T < 1. ? mix(c0, c1, T) : T < 2. ? mix(c1, c2, T - 1.) : mix(c2, c3, T - 2.);
 }
 
@@ -235,7 +147,7 @@ vec3 sky(vec3 d){
   c += band * (.012 + .05*n*n) * (1. - .7*lanes) * vec3(.85, .8, .95);
   // a nearby sun: tiny white-hot disc, corona and soft glare (bloom does the rest)
   float sd = max(dot(d, uSun), 0.);
-  c += vec3(1., .93, .82) * (pow(sd, 12000.) * 120. + pow(sd, 900.) * 3. + pow(sd, 60.) * .12 + pow(sd, 8.) * .02);
+  c += vec3(.8, .9, 1.) * (pow(sd, 12000.) * 120. + pow(sd, 900.) * 3. + pow(sd, 60.) * .12 + pow(sd, 8.) * .02);
   return c;
 }
 
@@ -264,7 +176,7 @@ vec3 hole(vec3 ro, vec3 rd){
     float rx = length(p.xz);
     float atm = smoothstep(15., 3.4, rx) * smoothstep(2.4, 3.6, rx) * exp(-abs(p.y)*(1.6 + 2.2/rx));
     glow += dt * atm * heat(2.6*pow(3./rx, .9)) * pow(3./rx, 1.2) * .012;
-    glow += dt * exp(-abs(r - 1.52)*7.) * vec3(1., .94, .86) * .02;
+    glow += dt * exp(-abs(r - 1.52)*7.) * vec3(.62, .82, 1.) * .02;
 
     if(p.y * pn.y < 0.){
       vec3 q = mix(p, pn, p.y/(p.y - pn.y));
@@ -275,7 +187,7 @@ vec3 hole(vec3 ro, vec3 rd){
         float u = fract(ang / 6.2831853);
         float lr = log(rq);
         float big = fbmS(lr*6., u, 7., 3);                   // clumps and arms
-        float fil = fbmS(rq*9., u, 90., uHi > .5 ? 5 : 4);   // fine orbital filaments
+        float fil = fbmS(rq*6.5, u, 64., 4);   // fine orbital filaments (band-limited so they never alias into pixels)
         float dust = smoothstep(.5, .78, fbmS(lr*10., u, 18., 3) + big*.25 - .1) * smoothstep(4., 7.5, rq);
         float tex = clamp(.1 + big*1.1 + (fil - .45)*1.25, 0., 1.6);
         float prof = smoothstep(2.6, 3.2, rq) * (1. - smoothstep(8., 15.5, rq));
@@ -325,7 +237,7 @@ vec3 lattice(vec2 uv){
     if(t > 26.) break;
   }
   float core = exp(-length(uv)*5.5);
-  return (vec3(g*.14 + gr*.08) * vec3(.92, .95, 1.) + core*.45*vec3(1., .8, .55)) * 2.2;
+  return (vec3(g*.14 + gr*.08) * vec3(.92, .95, 1.) + core*.45*vec3(.5, .78, 1.)) * 2.2;
 }
 
 void main(){
@@ -368,32 +280,42 @@ void main(){
 /* ---- pass 3: lens + film: CA, bloom, ACES, grade, vignette, scrim, grain ---- */
 const COMP = /* glsl */ `
 precision highp float;
-uniform sampler2D tScene; uniform sampler2D tBloomA; uniform sampler2D tBloomB;
+uniform sampler2D tScene; uniform sampler2D tBloomA; uniform sampler2D tBloomB; uniform vec2 uSceneRes;
 uniform vec2 uRes; uniform float uTime; uniform float uIntro; uniform float uDim; uniform float uScrim;
 uniform float uMob; uniform float uExposure; uniform float uWarp;
 varying vec2 vUv;
+// 4-tap B-spline bicubic: smooth upscale of the scene buffer, no visible pixels
+vec3 bicubic(sampler2D t, vec2 uv, vec2 res){
+  vec2 st = uv*res - .5; vec2 i = floor(st); vec2 f = st - i;
+  vec2 f2 = f*f, f3 = f2*f;
+  vec2 w0 = (1. - 3.*f + 3.*f2 - f3)/6., w1 = (4. - 6.*f2 + 3.*f3)/6., w2 = (1. + 3.*f + 3.*f2 - 3.*f3)/6., w3 = f3/6.;
+  vec2 g0 = w0 + w1, g1 = w2 + w3;
+  vec2 h0 = (w1/g0 - 1. + i + .5)/res, h1 = (w3/g1 + 1. + i + .5)/res;
+  return g0.y*(g0.x*texture2D(t, vec2(h0.x, h0.y)).rgb + g1.x*texture2D(t, vec2(h1.x, h0.y)).rgb)
+       + g1.y*(g0.x*texture2D(t, vec2(h0.x, h1.y)).rgb + g1.x*texture2D(t, vec2(h1.x, h1.y)).rgb);
+}
 vec3 aces(vec3 x){ return clamp((x*(2.51*x + .03)) / (x*(2.43*x + .59) + .14), 0., 1.); }
 float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * .1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
 void main(){
   vec2 dc = vUv - .5;
   float ca = (.0016 + uWarp*.006) * dot(dc, dc) * 4.;
   vec3 c;
-  c.r = texture2D(tScene, vUv - dc*ca).r;
-  c.g = texture2D(tScene, vUv).g;
-  c.b = texture2D(tScene, vUv + dc*ca).b;
+  c.r = bicubic(tScene, vUv - dc*ca, uSceneRes).r;
+  c.g = bicubic(tScene, vUv, uSceneRes).g;
+  c.b = bicubic(tScene, vUv + dc*ca, uSceneRes).b;
   vec3 bloom = texture2D(tBloomA, vUv).rgb * .32 + texture2D(tBloomB, vUv).rgb * .45;
   c += bloom;
   c *= uExposure;
   c = aces(c);
-  // gentle filmic grade: warm highlights, neutral-cool shadows
+  // cool filmic grade for the dark theme
   float l = dot(c, vec3(.2126, .7152, .0722));
-  c = mix(c * vec3(.97, .99, 1.03), c * vec3(1.02, 1., .96), smoothstep(.2, .8, l));
+  c = mix(c * vec3(.94, .98, 1.05), c * vec3(.98, 1., 1.03), smoothstep(.2, .8, l));
   c = pow(c, vec3(1. / 2.2));
   vec2 sp = vUv;
   float vig = 1. - smoothstep(.5, 1.2, length((sp - vec2(.55, .5)) * vec2(1.25, 1.)));
-  float scrim = uMob > .5 ? mix(.1, 1., smoothstep(.0, .62, sp.y)) : mix(.18, 1., smoothstep(.06, .62, sp.x));
+  float scrim = uMob > .5 ? mix(.1, 1., smoothstep(.0, .62, sp.y)) : mix(.3, 1., smoothstep(.0, .5, sp.y));
   c *= mix(.25, 1., vig) * mix(1., scrim, uScrim) * uDim * uIntro;
-  c += (hash12(gl_FragCoord.xy + fract(uTime*7.)*91.) - .5) * .022;
+  c += (hash12(gl_FragCoord.xy + fract(uTime*7.)*91.) - .5) * .008;
   gl_FragColor = vec4(max(c, 0.), 1.);
 }
 `
@@ -439,10 +361,11 @@ export default function LandingHero() {
       const y = window.scrollY - filmTop
       const p = clamp(y / filmH, 0, 1)
       const exit = clamp((y - filmH) / (vh * 0.55), 0, 1)
-      const s = p * (NA - 1)
+      // single landing act: it lifts away as you scroll into the page
+      const s = NA > 1 ? p * (NA - 1) : p * 0.85
       actRefs.current.forEach((el, q) => {
         if (!el) return
-        const op = Math.round(clamp(1 - Math.abs(s - q) * 2.15, 0, 1) * (1 - exit) * 100) / 100
+        const op = Math.round(clamp(1 - Math.abs(s - q) * (NA > 1 ? 2.15 : 1.35), 0, 1) * (1 - exit) * 100) / 100
         set(el, `o${q}`, "opacity", String(op))
         set(el, `v${q}`, "visibility", op < 0.01 ? "hidden" : "visible")
         if (op >= 0.01) set(el, `t${q}`, "transform", `translate3d(0,${Math.round((s - q) * -26)}px,0)`)
@@ -519,9 +442,9 @@ export default function LandingHero() {
       /* dynamic resolution: the scene pass scales between these (× CSS pixels).
          While scrolling it stays in the low tiers for fluid motion; at rest it climbs
          to native device resolution (4K on a 4K screen) as long as the GPU keeps up. */
-      const TIERS = [0.28, 0.34, 0.42, 0.5, 0.6, 0.75, 1, 1.25, 1.5, 2].filter((x) => x <= DPR + 0.001)
-      const MOVE_CAP = TIERS.indexOf(0.6) >= 0 ? TIERS.indexOf(0.6) : TIERS.length - 1
-      let tier = Math.min(lowEnd ? 2 : 4, TIERS.length - 1)
+      const TIERS = [0.5, 0.6, 0.75, 0.9, 1, 1.25, 1.5, 2].filter((x) => x <= DPR + 0.001)
+      const MOVE_CAP = Math.max(0, TIERS.filter((x) => x <= 1).length - 1)
+      let tier = Math.min(lowEnd || MOB ? 2 : MOVE_CAP, TIERS.length - 1)
       // ?quality=max locks the top tier (for 4K stills / screenshots)
       const LOCK_MAX = new URLSearchParams(window.location.search).get("quality") === "max"
       if (LOCK_MAX) tier = TIERS.length - 1
@@ -564,6 +487,7 @@ export default function LandingHero() {
       const blurMat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: BLUR, depthTest: false, depthWrite: false, uniforms: { tSrc: { value: null }, uDir: { value: new THREE.Vector2() } } })
       const compU = {
         tScene: { value: sceneRT.texture },
+        uSceneRes: { value: new THREE.Vector2(1, 1) },
         tBloomA: { value: bA.texture },
         tBloomB: { value: cA.texture },
         uRes: { value: new THREE.Vector2() },
@@ -597,7 +521,8 @@ export default function LandingHero() {
         uniforms.uRes.value.set(w, h)
         const hi = s >= 0.99
         uniforms.uHi.value = hi ? 1 : 0
-        uniforms.uSteps.value = MOB ? (hi ? 110 : 72) : hi ? 165 : s >= 0.6 ? 120 : 100
+        uniforms.uSteps.value = MOB ? (hi ? 96 : 80) : hi ? 140 : 110
+        compU.uSceneRes.value.set(w, h)
       }
       const sizeBloom = () => {
         const w = Math.max(8, Math.round(window.innerWidth / 4)),
@@ -787,7 +712,7 @@ export default function LandingHero() {
         const sx = lerp(A.sx, B.sx, t) * centre,
           sy = lerp(A.sy, B.sy, t) * centre
         if (MOB) uniforms.uShift.value.set(0, sy)
-        else uniforms.uShift.value.set(sx * Math.min(1, window.innerWidth / window.innerHeight / 1.5), 0.02 * centre)
+        else uniforms.uShift.value.set(sx * Math.min(1, window.innerWidth / window.innerHeight / 1.5), sy * 0.45)
         uniforms.uFall.value = fall
         uniforms.uTime.value = time
 
@@ -813,7 +738,7 @@ export default function LandingHero() {
         compU.uDim.value = lerp(A.dim, B.dim, t)
         compU.uScrim.value = lerp(A.sc, B.sc, t)
         compU.uWarp.value = warp
-        compU.uExposure.value = 1.05
+        compU.uExposure.value = 0.95
         pass(compMat, null)
 
         if (++hudTick % 8 === 0) {
@@ -913,14 +838,6 @@ export default function LandingHero() {
         <div ref={progRef} />
       </div>
 
-      <div ref={railRef} className="ar-rail" aria-hidden="true">
-        {ACTS.map((a, i) => (
-          <div key={a.rail} className={i === 0 ? "on" : ""}>
-            <span>{a.rail}</span>
-            <s />
-          </div>
-        ))}
-      </div>
 
       <div ref={hudRef} className="ar-hud" aria-hidden="true">
         <div>
@@ -946,11 +863,8 @@ export default function LandingHero() {
             }}
             className={`ar-act ${i === 0 ? "is-first" : ""}`}
           >
-            <span className="ar-num" aria-hidden="true">
-              {String(i).padStart(2, "0")}
-            </span>
             <div className="ar-act-inner">
-              <div className="ar-act-col">
+              <div className="ar-act-l">
                 <div className="ar-eyebrow">
                   <s />
                   {a.eyebrow}
@@ -964,20 +878,17 @@ export default function LandingHero() {
                     <Lines t={a.title} />
                   </h2>
                 )}
+              </div>
+              <div className="ar-act-r">
                 <p className="ar-lede">{a.lede}</p>
                 {i === 0 && (
                   <div className="ar-chips">
-                    {["PREDICTIVE AI", "FULL-STACK PRODUCTS", "13-MEMBER TEAM"].map((c, k) => (
+                    {["MACHINE LEARNING", "GENERATIVE AI", "FULL-STACK"].map((c, k) => (
                       <span key={c} className="ar-chip" style={{ ["--i" as string]: k }}>
                         {c}
                       </span>
                     ))}
                   </div>
-                )}
-                {a.link && (
-                  <a className="ar-btn" href={a.link.href} {...(a.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-                    {a.link.label}
-                  </a>
                 )}
                 {a.readout && (
                   <div className="ar-card ar-readout">
@@ -993,6 +904,11 @@ export default function LandingHero() {
                     ))}
                   </div>
                 )}
+                {a.link && (
+                  <a className="ar-btn" href={a.link.href} {...(a.link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                    {a.link.label}
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -1004,7 +920,7 @@ export default function LandingHero() {
         <b />
       </div>
       <button type="button" className="ar-skip" onClick={skip}>
-        SKIP FLIGHT ↓
+        SKIP INTRO ↓
       </button>
     </>
   )
