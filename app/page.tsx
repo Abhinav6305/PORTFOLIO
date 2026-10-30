@@ -194,6 +194,51 @@ const ADDITIONAL = [
   { role: "Event Organizer", org: "IIC-SPEC" },
 ]
 
+const EVENTS = [
+  {
+    name: "HACK-A-THON 1.0",
+    organizer: "Origin SPEC",
+    date: "11–12 Dec 2025",
+    image: "/events/hack-a-thon-1-origin-spec.png",
+    alt: "Organizers collaborating during HACK-A-THON 1.0",
+  },
+  {
+    name: "Code Chaos",
+    organizer: "Origin · SPECFIESTA 2K26 · SPEC",
+    date: "Jan 2026",
+    image: "/events/code-chaos-specfiesta.png",
+    alt: "Code Chaos organizers presenting at SPECFIESTA",
+  },
+  {
+    name: "Sankalp — The Innovation Sprint",
+    organizer: "Origin SPEC",
+    date: "5–6 Aug",
+    image: "/events/sankalp-innovation-sprint.png",
+    alt: "Sankalp Innovation Sprint organizing team at St. Peter's Engineering College",
+  },
+  {
+    name: "Industry Hack 26",
+    organizer: "SPEC Incubation and Innovation Center",
+    date: "22–23 Aug 2026",
+    image: "/events/industry-hack-26.png",
+    alt: "Industry Hack 26 event collage showing speakers, participants, and award presentations",
+  },
+  {
+    name: "India–Japan Innovation Hackathon Final",
+    organizer: "St. Peter's Engineering College",
+    date: "23 Sep 2026",
+    image: "/events/india-japan-hackathon-final.png",
+    alt: "Guests and organizers at the India–Japan Innovation Hackathon final",
+  },
+  {
+    name: "India–Japan Innovation Hackathon Awards Ceremony",
+    organizer: "Cyber Garden · JAPAN FEST",
+    date: "11 Oct 2026",
+    image: "/events/india-japan-awards-japan-fest.jpg",
+    alt: "India–Japan Innovation Hackathon awards ceremony guests at Cyber Garden",
+  },
+]
+
 const CERTS = [
   {
     name: "Summer of AI Internship Program",
@@ -586,6 +631,7 @@ export default function Home() {
           <a href="#academics">Academics</a>
           <a href="#experience">Experience</a>
           <a href="#additional">Additional</a>
+          <a href="#events">Events</a>
           <a href="#achievements">Achievements</a>
           <a href="#contact" className="ar-cta">
             Contact
@@ -892,6 +938,36 @@ export default function Home() {
               <article key={item.org} className="ar-additional-card glow-card reveal">
                 <h4>{item.role}</h4>
                 <p>{item.org}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* EVENTS ORGANIZED */}
+        <section id="events" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            EVENTS
+          </div>
+          <div className="reveal">
+            <div className="ar-sec-h">EVENTS ORGANIZED · LEADERSHIP & DELIVERY</div>
+            <H a="Events I&apos;ve" b="organized." />
+          </div>
+          <div className="ar-events-grid">
+            {EVENTS.map((event, i) => (
+              <article
+                key={event.name}
+                className={`ar-event-card glow-card reveal${i === 0 || i === 3 ? " featured" : ""}`}
+                style={{ ["--d" as string]: `${(i % 3) * 90}ms` }}
+              >
+                <a className="ar-event-image" href={event.image} target="_blank" rel="noopener noreferrer">
+                  <img src={event.image} alt={event.alt} loading="lazy" />
+                  <span className="ar-event-open" aria-hidden="true">↗</span>
+                </a>
+                <div className="ar-event-copy">
+                  <span className="ar-mono dim">{event.date}</span>
+                  <h4>{event.name}</h4>
+                  <p>{event.organizer}</p>
+                </div>
               </article>
             ))}
           </div>
