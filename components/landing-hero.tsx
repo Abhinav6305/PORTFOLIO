@@ -17,7 +17,6 @@ import { useEffect, useRef } from "react"
 type Readout = { k: string; v: string; amb?: boolean }
 type Act = {
   rail: string
-  eyebrow: string
   title: [React.ReactNode, React.ReactNode]
   lede: string
   readout?: { head: string; tag: string; rows: Readout[] }
@@ -27,7 +26,6 @@ type Act = {
 const ACTS: Act[] = [
   {
     rail: "HELLO",
-    eyebrow: "AI ENGINEER · FULL-STACK DEVELOPER · UI/UX DESIGNER",
     title: [<>ABHINAV</>, <>RISHI</>],
     lede: "Wandering between code and the cosmos, building intelligent systems that see problems coming before they arrive.",
     link: { href: "#about", label: "EXPLORE MY UNIVERSE ↓" },
@@ -865,10 +863,6 @@ export default function LandingHero() {
           >
             <div className="ar-act-inner">
               <div className="ar-act-l">
-                <div className="ar-eyebrow">
-                  <s />
-                  {a.eyebrow}
-                </div>
                 {i === 0 ? (
                   <h1 className="ar-mega">
                     <Lines t={a.title} />
@@ -883,7 +877,7 @@ export default function LandingHero() {
                 <p className="ar-lede">{a.lede}</p>
                 {i === 0 && (
                   <div className="ar-chips">
-                    {["MACHINE LEARNING", "GENERATIVE AI", "FULL-STACK"].map((c, k) => (
+                    {["RESEARCHER", "RAG BUILDER", "AI ENTHUSIAST", "EVENT ORGANIZER"].map((c, k) => (
                       <span key={c} className="ar-chip" style={{ ["--i" as string]: k }}>
                         {c}
                       </span>

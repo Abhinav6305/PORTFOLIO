@@ -11,16 +11,10 @@ const GITHUB = "https://github.com/Abhinav6305"
 /* ------------------------------------------------------------------ content */
 
 const DESCRIPTORS = [
-  "Coder",
-  "AI Engineer",
-  "Full-Stack Developer",
-  "UI/UX Designer",
-  "Problem Solver",
-  "Hackathon Runner-up",
-  "Product Thinker",
-  "Graphic Designer",
-  "Video Editor",
-  "Lifelong Learner",
+  "Researcher",
+  "RAG Builder",
+  "AI Enthusiast",
+  "Event Organizer",
 ]
 
 const EDUCATION = [
@@ -165,6 +159,14 @@ const SKILLS = SKILL_GROUPS.flatMap((g) => g.items)
 
 const EXPERIENCE = [
   {
+    role: "NVIDIA Developer Program Member",
+    org: "NVIDIA Developer Program",
+    when: "Dec 2025 – Present",
+    current: true,
+    detail: "Member of the NVIDIA Developer Program since December 2025.",
+    tags: ["NVIDIA", "Developer Program", "AI"],
+  },
+  {
     role: "UI / UX Design Intern",
     org: "FlyRank AI",
     when: "Jul 2026 – Nov 2026 · 20 weeks",
@@ -184,7 +186,23 @@ const EXPERIENCE = [
   },
 ]
 
+const ADDITIONAL = [
+  { role: "Ex Joint Secretary", org: "Cultural Committee · St. Peter's Engineering College" },
+  { role: "Board Member", org: "Origin SPEC" },
+  { role: "Event Management Head", org: "CSI SPEC" },
+  { role: "Startup Recruitment & Management Head", org: "EDC SPEC" },
+  { role: "Event Organizer", org: "IIC-SPEC" },
+]
+
 const CERTS = [
+  {
+    name: "Summer of AI Internship Program",
+    kind: "course",
+    org: "Swecha",
+    date: "Jul 2025",
+    detail: "Certificate of participation in the Summer of AI Internship Program from April 8 to July 12, 2025.",
+    href: "/certifications/soai-summer-of-ai-certificate.png",
+  },
   {
     name: "Introduction to Machine Learning",
     kind: "course",
@@ -567,6 +585,7 @@ export default function Home() {
           <a href="#projects">Projects</a>
           <a href="#academics">Academics</a>
           <a href="#experience">Experience</a>
+          <a href="#additional">Additional</a>
           <a href="#achievements">Achievements</a>
           <a href="#contact" className="ar-cta">
             Contact
@@ -859,6 +878,25 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ADDITIONAL */}
+        <section id="additional" className="ar-sec">
+          <div className="ar-bgword" aria-hidden="true">
+            ADDITIONAL
+          </div>
+          <div className="reveal">
+            <div className="ar-sec-h">ADDITIONAL · LEADERSHIP & CAMPUS ROLES</div>
+            <H a="Beyond the" b="classroom." />
+          </div>
+          <div className="ar-additional-grid">
+            {ADDITIONAL.map((item) => (
+              <article key={item.org} className="ar-additional-card glow-card reveal">
+                <h4>{item.role}</h4>
+                <p>{item.org}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         {/* ACHIEVEMENTS + BEYOND */}
         <section id="achievements" className="ar-sec">
           <div className="ar-bgword" aria-hidden="true">
@@ -970,7 +1008,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <p className="ar-tagline">Keep looking up. Keep building.</p>
         </section>
 
         <div className="ar-endword" aria-hidden="true">
