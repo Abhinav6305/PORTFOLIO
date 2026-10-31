@@ -241,6 +241,22 @@ const EVENTS = [
 
 const CERTS = [
   {
+    name: "Advanced Visual Effects in DaVinci Resolve 20",
+    kind: "course",
+    org: "Blackmagic Design",
+    date: "Oct 2026",
+    detail: "Certificate of completion for advanced visual effects in DaVinci Resolve 20.",
+    href: "/certifications/blackmagic-advanced-visual-effects-davinci-resolve-20.pdf",
+  },
+  {
+    name: "Graphic Design Essentials",
+    kind: "course",
+    org: "Course Completion",
+    date: "Oct 2026",
+    detail: "Completed the Graphic Design Essentials course, equivalent to 45 minutes of training.",
+    href: "/certifications/graphic-design-essentials.pdf",
+  },
+  {
     name: "Summer of AI Internship Program",
     kind: "course",
     org: "Swecha",
